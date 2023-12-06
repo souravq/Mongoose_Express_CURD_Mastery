@@ -1,11 +1,11 @@
 // 1. Create an interface representing a document in MongoDB.
 
-export type fullName = {
+export type FullName = {
   firstName: string;
   lastName: string;
 };
 
-export type address = {
+export type Address = {
   street: string;
   city: string;
   country: string;
@@ -21,11 +21,11 @@ export type User = {
   userId: number;
   username: string;
   password: string;
-  Name: fullName;
+  Name: FullName;
   age: number;
   email: string;
   isActive: boolean;
   hobbies: string[];
-  address: address;
+  address: Address;
   orders: Order[];
 };
