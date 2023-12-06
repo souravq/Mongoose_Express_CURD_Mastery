@@ -66,26 +66,26 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-// // Delete User
-// const deleteUser = async (req: Request, res: Response) => {
-//   try {
-//     const userId = req.params.userId;
-//     const result = await UserService.deleteUser(userId);
-//     //send response
-//     res.status(200).json({
-//       success: true,
-//       message: "User deleted successfully!",
-//       data: result,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
+// Delete User
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const result = await UserService.deleteUser(userId);
+    //send response
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully!",
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const UserController = {
   createUser,
   getAllUsers,
   getSingleUserData,
   updateUser,
-  //deleteUser,
+  deleteUser,
 };

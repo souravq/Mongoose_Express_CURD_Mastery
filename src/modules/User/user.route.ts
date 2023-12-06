@@ -20,7 +20,7 @@ router.get("/:userId", UserController.getSingleUserData);
 router.put("/", UserController.updateUser);
 
 // Delete User
-//router.delete("/:userId", UserController.deleteUser);
+router.delete("/:userId", UserController.deleteUser);
 
 export const userRouter = {
   router,

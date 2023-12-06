@@ -45,19 +45,19 @@ const updateUser = async (user: User) => {
 };
 
 // Delete User
-// const deleteUser = async (userId: string) => {
-//   try {
-//     const result = await UserModel.deleteOne({ _id: new ObjectId(userId) });
-//     return result;
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
+const deleteUser = async (userId: string) => {
+  try {
+    const result = await UserModel.deleteOne({ _id: new ObjectId(userId) });
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const UserService = {
   createUser,
   getAllUsers,
   getSingleUser,
   updateUser,
-  //deleteUser,
+  deleteUser,
 };
