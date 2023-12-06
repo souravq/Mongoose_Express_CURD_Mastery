@@ -9,5 +9,5 @@ const app = (0, express_1.default)();
 // Parser
 app.use(express_1.default.json());
 // User Route
-app.use("/api/v1/user", user_route_1.userRouter.router);
+app.use("/api/users", user_route_1.userRouter.router);
 exports.default = app;

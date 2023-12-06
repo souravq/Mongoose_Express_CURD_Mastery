@@ -8,7 +8,7 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 // Create user
-router.post("/create-user", UserController.createUser);
+router.post("/", UserController.createUser);
 
 export const userRouter = {
   router,
