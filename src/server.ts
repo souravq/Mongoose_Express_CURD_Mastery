@@ -1,22 +1,17 @@
 import mongoose from "mongoose";
 import app from "./app";
-
-//VKNXG8SDka5Zk5xw
+import { config } from "./config";
 
 async function main() {
   try {
-    await mongoose.connect(
-      "mongodb+srv://souravbera515:VKNXG8SDka5Zk5xw@cluster0.xlhgqcj.mongodb.net/?retryWrites=true&w=majority"
-    );
+    await mongoose.connect(config.database_url as string);
 
-    app.listen(3006, () => {
-      console.log("Mongoose App is listening on PORT 3006");
+    app.listen(config.port, () => {
+      console.log("Mongoose App is listening on PORT " + config.port);
     });
   } catch (err) {
     console.log(err);
   }
-
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
 
 main();

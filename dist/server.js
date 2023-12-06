@@ -14,19 +14,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const app_1 = __importDefault(require("./app"));
-//VKNXG8SDka5Zk5xw
+const config_1 = require("./config");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield mongoose_1.default.connect("mongodb+srv://souravbera515:VKNXG8SDka5Zk5xw@cluster0.xlhgqcj.mongodb.net/?retryWrites=true&w=majority");
-            app_1.default.listen(3006, () => {
-                console.log("Mongoose App is listening on PORT 3006");
+            yield mongoose_1.default.connect(config_1.config.database_url);
+            app_1.default.listen(config_1.config.port, () => {
+                console.log("Mongoose App is listening on PORT " + config_1.config.port);
             });
         }
         catch (err) {
             console.log(err);
         }
-        // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
     });
 }
 main();
