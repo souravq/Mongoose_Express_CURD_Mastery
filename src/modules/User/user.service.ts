@@ -1,5 +1,4 @@
-import { ObjectId } from "mongodb";
-import { IUser } from "./user.interface";
+import { IOrder, IUser } from "./user.interface";
 import User from "./user.model";
 
 // Create user
@@ -80,10 +79,33 @@ const deleteUser = async (userId: number) => {
   }
 };
 
+// ===================== ORDER ====================
+
+// Create Order
+const createOrder = async (userId: number, orderData: IOrder) => {
+  try {
+    const user = new User();
+    if (!(await user.isUserExist(userId))) {
+      throw new Error("User not found");
+    }
+    const result = await User.updateOne(
+      { userId: userId },
+      {
+        $push: { orders: orderData },
+      },
+      { upsert: true }
+    );
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const UserService = {
   createUser,
   getAllUsers,
   getSingleUser,
   updateUser,
   deleteUser,
+  createOrder,
 };

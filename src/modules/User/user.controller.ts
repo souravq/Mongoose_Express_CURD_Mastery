@@ -186,10 +186,39 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+// ================= ORDER ==================
+
+const createOrder = async (req: Request, res: Response) => {
+  try {
+    const orderData = req.body;
+    const userId = req.params.userId;
+    const result = await UserService.createOrder(parseInt(userId), orderData);
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: "Order created successfully!",
+        data: null,
+      });
+    } else {
+      res.status(200).json({
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const UserController = {
   createUser,
   getAllUsers,
   getSingleUserData,
   updateUser,
   deleteUser,
+  createOrder,
 };

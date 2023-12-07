@@ -1,11 +1,9 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import { UserController } from "./user.controller";
 
 const router = express.Router();
 
-// router.get("/", (req: Request, res: Response) => {
-//   res.send("Router Setup Done");
-// });
+//============= USER APIS ================
 
 // Create user
 router.post("/", UserController.createUser);
@@ -21,6 +19,10 @@ router.put("/:userId", UserController.updateUser);
 
 // Delete User
 router.delete("/:userId", UserController.deleteUser);
+
+//============ ORDER APIS ============================
+// Create Order
+router.put("/:userId/orders", UserController.createOrder);
 
 export const userRouter = {
   router,
