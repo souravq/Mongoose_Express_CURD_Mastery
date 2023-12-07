@@ -101,6 +101,36 @@ const createOrder = async (userId: number, orderData: IOrder) => {
   }
 };
 
+// Get All Orders for User
+const getAllOrders = async (userId: number) => {
+  try {
+    const user = new User();
+    if (!(await user.isUserExist(userId))) {
+      throw new Error("User not found");
+    }
+    const result = await User.findOne(
+      { userId },
+      {
+        "orders._id": 0,
+        _id: 0,
+        userId: 0,
+        username: 0,
+        password: 0,
+        fullName: 0,
+        age: 0,
+        email: 0,
+        isActive: 0,
+        hobbies: 0,
+        address: 0,
+        __v: 0,
+      }
+    );
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const UserService = {
   createUser,
   getAllUsers,
@@ -108,4 +138,5 @@ export const UserService = {
   updateUser,
   deleteUser,
   createOrder,
+  getAllOrders,
 };
