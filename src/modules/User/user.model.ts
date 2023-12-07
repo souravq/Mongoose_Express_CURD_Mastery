@@ -28,10 +28,10 @@ const orderSchema = new Schema<IOrder>({
 });
 
 const userSchema = new Schema<IUser, UserModel, UserMethods>({
-  userId: { type: String, required: true },
+  userId: { type: Number, required: true },
   username: { type: String, required: true },
   password: { type: String, required: true },
-  Name: { type: fullNameSchema, required: true },
+  fullName: { type: fullNameSchema, required: true },
   age: { type: Number, required: true },
   email: { type: String, required: true },
   isActive: { type: Boolean, required: true },
@@ -40,7 +40,7 @@ const userSchema = new Schema<IUser, UserModel, UserMethods>({
   orders: { type: [orderSchema], required: true },
 });
 
-userSchema.methods.isUserExist = async (userId: string) => {
+userSchema.methods.isUserExist = async (userId: number) => {
   console.log(userId);
   const existingUser = await User.findOne({ userId });
   return existingUser;

@@ -20,10 +20,10 @@ export type IOrder = {
 };
 
 export type IUser = {
-  userId: string;
+  userId: number;
   username: string;
   password: string;
-  Name: IFullName;
+  fullName: IFullName;
   age: number;
   email: string;
   isActive: boolean;
@@ -33,7 +33,7 @@ export type IUser = {
 };
 
 export type UserMethods = {
-  isUserExist(id: string): Promise<IUser | null>;
+  isUserExist(id: number): Promise<IUser | null>;
 };
 
 export type UserModel = Model<IUser, {}, UserMethods>;

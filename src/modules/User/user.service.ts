@@ -32,7 +32,7 @@ const getAllUsers = async () => {
 };
 
 // Retrieve a specific user by ID
-const getSingleUser = async (userId: string) => {
+const getSingleUser = async (userId: number) => {
   try {
     //const result = await User.findOne({ userId });
     const user = new User();
