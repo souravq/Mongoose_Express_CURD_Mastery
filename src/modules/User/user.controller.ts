@@ -45,6 +45,7 @@ const getAllUsers = async (req: Request, res: Response) => {
   try {
     //Get All Users Service Call
     const result = await UserService.getAllUsers();
+
     //send Response
     res.status(200).json({
       success: true,

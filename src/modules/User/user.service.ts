@@ -24,7 +24,11 @@ const createUser = async (userData: IUser) => {
 // Get All User
 const getAllUsers = async () => {
   try {
-    const result = await User.find({});
+    const result = await User.find(
+      {},
+      "username fullName.firstName fullName.lastName age email address.street address.city address.country -_id"
+    );
+
     return result;
   } catch (err) {
     console.log(err);
