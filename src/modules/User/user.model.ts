@@ -1,27 +1,34 @@
 // 2. Create a Schema corresponding to the document interface.
 
 import { Schema, model } from "mongoose";
-import { Address, FullName, Order, User } from "./user.interface";
+import {
+  IAddress,
+  IFullName,
+  IOrder,
+  IUser,
+  UserMethods,
+  UserModel,
+} from "./user.interface";
 
-const fullNameSchema = new Schema<FullName>({
+const fullNameSchema = new Schema<IFullName>({
   firstName: String,
   lastName: String,
 });
 
-const addressSchema = new Schema<Address>({
+const addressSchema = new Schema<IAddress>({
   street: String,
   city: String,
   country: String,
 });
 
-const orderSchema = new Schema<Order>({
+const orderSchema = new Schema<IOrder>({
   productName: String,
   price: Number,
   quantity: Number,
 });
 
-const userSchema = new Schema<User>({
-  userId: { type: Number, required: true },
+const userSchema = new Schema<IUser, UserModel, UserMethods>({
+  userId: { type: String, required: true },
   username: { type: String, required: true },
   password: { type: String, required: true },
   Name: { type: fullNameSchema, required: true },
@@ -33,8 +40,14 @@ const userSchema = new Schema<User>({
   orders: { type: [orderSchema], required: true },
 });
 
+userSchema.methods.isUserExist = async (userId: string) => {
+  console.log(userId);
+  const existingUser = await User.findOne({ userId });
+  return existingUser;
+};
+
 // 3. Create a Model.
 
-const UserModel = model<User>("User", userSchema);
+const User = model<IUser, UserModel>("User", userSchema);
 
-export default UserModel;
+export default User;

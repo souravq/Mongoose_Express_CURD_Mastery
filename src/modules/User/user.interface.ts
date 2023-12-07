@@ -1,31 +1,39 @@
 // 1. Create an interface representing a document in MongoDB.
 
-export type FullName = {
+import { Model } from "mongoose";
+
+export type IFullName = {
   firstName: string;
   lastName: string;
 };
 
-export type Address = {
+export type IAddress = {
   street: string;
   city: string;
   country: string;
 };
 
-export type Order = {
+export type IOrder = {
   productName: string;
   price: number;
   quantity: number;
 };
 
-export type User = {
-  userId: number;
+export type IUser = {
+  userId: string;
   username: string;
   password: string;
-  Name: FullName;
+  Name: IFullName;
   age: number;
   email: string;
   isActive: boolean;
   hobbies: string[];
-  address: Address;
-  orders: Order[];
+  address: IAddress;
+  orders: IOrder[];
 };
+
+export type UserMethods = {
+  isUserExist(id: string): Promise<IUser | null>;
+};
+
+export type UserModel = Model<IUser, {}, UserMethods>;

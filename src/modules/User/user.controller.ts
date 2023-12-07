@@ -5,7 +5,7 @@ import { UserService } from "./user.service";
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body;
-    // Service Call
+    // Create User Service Call
     const result = await UserService.createUser(user);
     // Send Response
     res.status(200).json({
@@ -21,6 +21,7 @@ const createUser = async (req: Request, res: Response) => {
 // Get All Users
 const getAllUsers = async (req: Request, res: Response) => {
   try {
+    //Get All Users Service Call
     const result = await UserService.getAllUsers();
     //send Response
     res.status(200).json({
@@ -37,14 +38,25 @@ const getAllUsers = async (req: Request, res: Response) => {
 const getSingleUserData = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
+    // Get Single User Service Call
     const result = await UserService.getSingleUser(userId);
-    console.log(result);
-    //send Response
-    res.status(200).json({
-      success: true,
-      message: "User fetched successfully!",
-      data: result,
-    });
+    // Send Response
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: "User fetched successfully!",
+        data: result,
+      });
+    } else {
+      res.status(200).json({
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
+      });
+    }
   } catch (err) {
     console.log(err);
   }
@@ -54,8 +66,9 @@ const getSingleUserData = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   try {
     const userUpdatedData = req.body;
+    // Update User Service Call
     const result = await UserService.updateUser(userUpdatedData);
-    //send Response
+    // Send Response
     res.status(200).json({
       success: true,
       message: "User updated successfully!",
@@ -70,8 +83,9 @@ const updateUser = async (req: Request, res: Response) => {
 const deleteUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
+    // Delete User Service Call
     const result = await UserService.deleteUser(userId);
-    //send response
+    // Send response
     res.status(200).json({
       success: true,
       message: "User deleted successfully!",
