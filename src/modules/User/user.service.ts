@@ -67,9 +67,13 @@ const updateUser = async (userId: number, userData: IUser) => {
 };
 
 // Delete User
-const deleteUser = async (userId: string) => {
+const deleteUser = async (userId: number) => {
   try {
-    const result = await User.deleteOne({ _id: new ObjectId(userId) });
+    const user = new User();
+    if (!(await user.isUserExist(userId))) {
+      throw new Error("User not found");
+    }
+    const result = await User.deleteOne({ userId });
     return result;
   } catch (err) {
     console.log(err);
