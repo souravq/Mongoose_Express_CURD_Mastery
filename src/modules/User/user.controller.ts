@@ -63,12 +63,32 @@ const getSingleUserData = async (req: Request, res: Response) => {
     const userId = req.params.userId;
     // Get Single User Service Call
     const result = await UserService.getSingleUser(parseInt(userId));
+
+    // Final Expected Response
+    const finalResponse: createUserResponseData = {
+      userId: result?.userId as number,
+      username: result?.username as string,
+      fullName: {
+        firstName: result?.fullName?.firstName as string,
+        lastName: result?.fullName?.lastName as string,
+      },
+      age: result?.age as number,
+      email: result?.email as string,
+      isActive: result?.isActive as boolean,
+      hobbies: result?.hobbies ? result?.hobbies : [],
+      address: {
+        street: result?.address?.street as string,
+        city: result?.address?.city as string,
+        country: result?.address?.country as string,
+      },
+    };
+
     // Send Response
     if (result) {
       res.status(200).json({
         success: true,
         message: "User fetched successfully!",
-        data: result,
+        data: finalResponse,
       });
     } else {
       res.status(200).json({

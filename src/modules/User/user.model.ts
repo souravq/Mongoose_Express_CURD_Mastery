@@ -41,7 +41,6 @@ const userSchema = new Schema<IUser, UserModel, UserMethods>({
 });
 
 userSchema.methods.isUserExist = async (userId: number) => {
-  console.log(userId);
   const existingUser = await User.findOne({ userId });
   return existingUser;
 };
