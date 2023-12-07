@@ -17,7 +17,7 @@ router.get("/", UserController.getAllUsers);
 router.get("/:userId", UserController.getSingleUserData);
 
 // Update User
-router.put("/", UserController.updateUser);
+router.put("/:userId", UserController.updateUser);
 
 // Delete User
 router.delete("/:userId", UserController.deleteUser);

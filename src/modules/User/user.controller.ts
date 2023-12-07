@@ -108,15 +108,50 @@ const getSingleUserData = async (req: Request, res: Response) => {
 // Update User
 const updateUser = async (req: Request, res: Response) => {
   try {
+    const userId = req.params.userId;
     const userUpdatedData = req.body;
     // Update User Service Call
-    const result = await UserService.updateUser(userUpdatedData);
+    const result = await UserService.updateUser(
+      parseInt(userId),
+      userUpdatedData
+    );
+
+    // Final Expected Response
+    const finalResponse: createUserResponseData = {
+      userId: userUpdatedData?.userId,
+      username: userUpdatedData?.username,
+      fullName: {
+        firstName: userUpdatedData?.fullName?.firstName,
+        lastName: userUpdatedData?.fullName?.lastName,
+      },
+      age: userUpdatedData?.age,
+      email: userUpdatedData?.email,
+      isActive: userUpdatedData?.isActive,
+      hobbies: userUpdatedData?.hobbies ? userUpdatedData?.hobbies : [],
+      address: {
+        street: userUpdatedData?.address?.street,
+        city: userUpdatedData?.address?.city,
+        country: userUpdatedData?.address?.country,
+      },
+    };
+
     // Send Response
-    res.status(200).json({
-      success: true,
-      message: "User updated successfully!",
-      data: result,
-    });
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: "User updated successfully!",
+        data: finalResponse,
+      });
+    } else {
+      res.status(200).json({
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
+      });
+    }
   } catch (err) {
     console.log(err);
   }

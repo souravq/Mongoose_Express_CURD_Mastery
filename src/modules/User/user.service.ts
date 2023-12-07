@@ -51,9 +51,15 @@ const getSingleUser = async (userId: number) => {
 };
 
 // Update User
-const updateUser = async (user: IUser) => {
+const updateUser = async (userId: number, userData: IUser) => {
   try {
-    const result = await User.updateOne(user);
+    //const result = await User.updateOne({ userId }, user);
+    const user = new User();
+    if (!(await user.isUserExist(userId))) {
+      throw new Error("User not found");
+    }
+    //const result = await User.updateOne({ userId }, user);
+    const result = await User.updateOne({ userId: userId }, { $set: userData });
     return result;
   } catch (err) {
     console.log(err);
