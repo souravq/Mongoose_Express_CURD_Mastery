@@ -36,4 +36,4 @@ export type UserMethods = {
   isUserExist(id: number): Promise<IUser | null>;
 };
 
-export type UserModel = Model<IUser, {}, UserMethods>;
+export type UserModel = Model<IUser, object, UserMethods>;

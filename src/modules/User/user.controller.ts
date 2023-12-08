@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
 import { UserService } from "./user.service";
 import { createUserResponseData } from "./types";
-//import userValidationSchema from "./user.validation";
 import { ZodError } from "zod";
-import { MongoServerError } from "mongodb";
 import { validation } from "./user.validation";
 
 // Create User
