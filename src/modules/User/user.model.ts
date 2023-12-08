@@ -72,6 +72,12 @@ const userSchema = new Schema<IUser, UserModel, UserMethods>({
   orders: { type: [orderSchema] },
 });
 
+// // Middleware
+
+// userSchema.pre("save", function () {
+//   //console.log(this, "Pre Data");
+// });
+
 userSchema.methods.isUserExist = async (userId: number) => {
   const existingUser = await User.findOne({ userId });
   return existingUser;

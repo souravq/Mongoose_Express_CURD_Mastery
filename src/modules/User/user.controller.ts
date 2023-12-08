@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { UserService } from "./user.service";
 import { createUserResponseData } from "./types";
-import userValidationSchema from "./user.validation";
+//import userValidationSchema from "./user.validation";
 import { ZodError } from "zod";
 import { MongoServerError } from "mongodb";
+import { validation } from "./user.validation";
 
 // Create User
 const createUser = async (req: Request, res: Response) => {
@@ -11,7 +12,7 @@ const createUser = async (req: Request, res: Response) => {
     const user = req.body;
 
     // Data validation using ZOD
-    const validateData = userValidationSchema.parse(user);
+    const validateData = validation.userValidationSchema.parse(user);
 
     // Create User Service Call
     const result = await UserService.createUser(validateData);
@@ -149,7 +150,7 @@ const updateUser = async (req: Request, res: Response) => {
     const userUpdatedData = req.body;
 
     // Data validation using ZOD
-    const validateData = userValidationSchema.parse(userUpdatedData);
+    const validateData = validation.userValidationSchema.parse(userUpdatedData);
 
     // Update User Service Call
     const result = await UserService.updateUser(parseInt(userId), validateData);
@@ -190,9 +191,39 @@ const updateUser = async (req: Request, res: Response) => {
         },
       });
     }
-  } catch (err) {
-    console.log("zod error");
-    console.log(err);
+  } catch (error) {
+    // Check if the error is a ZodError
+    if (error instanceof ZodError) {
+      // Extract relevant information from the ZodError
+      const validationErrors = error.errors.map((err) => ({
+        path: err.path.join("."),
+        message: err.message,
+      }));
+
+      // Send validation error response
+      res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: validationErrors,
+      });
+    } else {
+      const unknownError = error as Error;
+      if (unknownError.message === "Duplicate key error") {
+        res.status(400).json({
+          success: false,
+          message:
+            "Duplicate key error. User with the same userId or username already exists.",
+          error: unknownError.message,
+        });
+      }
+
+      // For other types of errors, send a generic error response
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing the request.",
+        error: unknownError.message,
+      });
+    }
   }
 };
 
@@ -230,9 +261,16 @@ const deleteUser = async (req: Request, res: Response) => {
 // Create Order
 const createOrder = async (req: Request, res: Response) => {
   try {
-    const orderData = req.body;
     const userId = req.params.userId;
-    const result = await UserService.createOrder(parseInt(userId), orderData);
+    const orderData = req.body;
+
+    //Zod Validation
+    const validateOrderData = validation.orderValidationSchema.parse(orderData);
+
+    const result = await UserService.createOrder(
+      parseInt(userId),
+      validateOrderData
+    );
     if (result) {
       res.status(200).json({
         success: true,
@@ -249,8 +287,39 @@ const createOrder = async (req: Request, res: Response) => {
         },
       });
     }
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    // Check if the error is a ZodError
+    if (error instanceof ZodError) {
+      // Extract relevant information from the ZodError
+      const validationErrors = error.errors.map((err) => ({
+        path: err.path.join("."),
+        message: err.message,
+      }));
+
+      // Send validation error response
+      res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: validationErrors,
+      });
+    } else {
+      const unknownError = error as Error;
+      if (unknownError.message === "Duplicate key error") {
+        res.status(400).json({
+          success: false,
+          message:
+            "Duplicate key error. User with the same userId or username already exists.",
+          error: unknownError.message,
+        });
+      }
+
+      // For other types of errors, send a generic error response
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing the request.",
+        error: unknownError.message,
+      });
+    }
   }
 };
 
