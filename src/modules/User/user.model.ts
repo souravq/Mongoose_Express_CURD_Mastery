@@ -10,6 +10,8 @@ import {
   UserModel,
 } from "./user.interface";
 
+import bcrypt from "bcrypt";
+
 const fullNameSchema = new Schema<IFullName>({
   firstName: {
     type: String,
@@ -62,7 +64,11 @@ const userSchema = new Schema<IUser, UserModel, UserMethods>({
     required: [true, "Username is required"],
     unique: true,
   },
-  password: { type: String, required: [true, "Password is required"] },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+    max: [20, "Password Max length can't be more than 20"],
+  },
   fullName: { type: fullNameSchema, required: [true, "Full Name is required"] },
   age: { type: Number, required: [true, "Age is required"] },
   email: { type: String, required: [true, "Email is required"] },
@@ -72,11 +78,14 @@ const userSchema = new Schema<IUser, UserModel, UserMethods>({
   orders: { type: [orderSchema] },
 });
 
-// // Middleware
+// Middleware
 
-// userSchema.pre("save", function () {
-//   //console.log(this, "Pre Data");
-// });
+userSchema.pre("save", async function (next) {
+  //console.log(this, "Pre Data");
+  const user = this;
+  user.password = await bcrypt.hash(user.password, 12);
+  next();
+});
 
 userSchema.methods.isUserExist = async (userId: number) => {
   const existingUser = await User.findOne({ userId });
