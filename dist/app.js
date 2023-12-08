@@ -9,5 +9,9 @@ const app = (0, express_1.default)();
 // Parser
 app.use(express_1.default.json());
 // User Route
-app.use("/api/users", user_route_1.userRouter.router);
+app.use('/api/users', user_route_1.userRouter.router);
+//Base Url
+app.get('/', (req, res) => {
+    res.send('Mongoose Express Crud Mastery App Is Running !!!');
+});
 exports.default = app;
