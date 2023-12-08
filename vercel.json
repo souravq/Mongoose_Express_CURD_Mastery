@@ -1,9 +1,9 @@
 {
     "version": 2,
-    "name": "music-album",
+    "name": "mongoose_express_crud_mastery",
     "builds": [
         {
-            "src": "./src",
+            "src": "dist/server.js",
             "use": "@vercel/node"
         }
     ],
