@@ -27,6 +27,9 @@ router.put("/:userId/orders", UserController.createOrder);
 // Get All Orders for User
 router.get("/:userId/orders", UserController.getAllOders);
 
+// Calculate Total Price of Orders for a Specific User
+router.get("/:userId/orders/total-price", UserController.totalPriceOfOrders);
+
 export const userRouter = {
   router,
 };

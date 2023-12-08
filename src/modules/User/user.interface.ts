@@ -29,7 +29,7 @@ export type IUser = {
   isActive: boolean;
   hobbies: string[];
   address: IAddress;
-  orders: IOrder[];
+  orders?: IOrder[];
 };
 
 export type UserMethods = {

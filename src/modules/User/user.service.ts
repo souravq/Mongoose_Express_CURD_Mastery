@@ -1,3 +1,4 @@
+import { MongoServerError } from "mongodb";
 import { IOrder, IUser } from "./user.interface";
 import User from "./user.model";
 
@@ -5,18 +6,17 @@ import User from "./user.model";
 const createUser = async (userData: IUser) => {
   try {
     const result = await User.create(userData);
-
-    // const user = new User(userData);
-
-    // if (await user.isUserExist(userData.userId)) {
-    //   throw new Error("User already Exist");
-    // }
-
-    // const result = await user.save();
-
     return result;
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    if (error instanceof MongoServerError) {
+      if (error.code === 11000 || error.code === 11001) {
+        throw new Error("Duplicate key error");
+      } else {
+        throw new Error("MongoDB Error");
+      }
+    } else {
+      throw new Error("Non-MongoDB Error");
+    }
   }
 };
 
@@ -131,6 +131,28 @@ const getAllOrders = async (userId: number) => {
   }
 };
 
+// Calculate Total Price of Orders
+const totalPriceOfOders = async (userId: number) => {
+  try {
+    const user = new User();
+    if (!(await user.isUserExist(userId))) {
+      throw new Error("User not found");
+    }
+    const result = await User.aggregate([
+      { $match: { userId: userId } },
+      {
+        $project: {
+          totalPrice: { $sum: "$orders.price" },
+          _id: 0,
+        },
+      },
+    ]);
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const UserService = {
   createUser,
   getAllUsers,
@@ -139,4 +161,5 @@ export const UserService = {
   deleteUser,
   createOrder,
   getAllOrders,
+  totalPriceOfOders,
 };
